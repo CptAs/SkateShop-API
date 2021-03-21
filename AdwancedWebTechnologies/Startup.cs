@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
 
-namespace AdwancedWebTechnologies
+namespace AdvancedWebTechnologies
 {
     public class Startup
     {
@@ -28,7 +28,7 @@ namespace AdwancedWebTechnologies
         {
             services.AddControllers();
 
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdwancedWebTechnologies", Version = "v1" }));
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdvancedWebTechnologies", Version = "v1" }));
 
         }
 
@@ -42,7 +42,7 @@ namespace AdwancedWebTechnologies
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AdwancedWebTechnologies v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AdvancedWebTechnologies v1"));
 
             app.UseHttpsRedirection();
 
