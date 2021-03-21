@@ -1,6 +1,6 @@
 using System;
 
-namespace AdwancedWebTechnologies
+namespace AdvancedWebTechnologies
 {
     public class WeatherForecast
     {
