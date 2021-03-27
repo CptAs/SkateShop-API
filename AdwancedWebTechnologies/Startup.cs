@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace AdvancedWebTechnologies
 {
@@ -29,6 +31,9 @@ namespace AdvancedWebTechnologies
             services.AddControllers();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdvancedWebTechnologies", Version = "v1" }));
+
+
+            services.AddDbContextPool<DbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SkateShopDB")));
 
         }
 
