@@ -12,7 +12,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-
+using AdvancedWebTechnologies.Data;
+using AdvancedWebTechnologies.Interfaces;
+using AdvancedWebTechnologies.Services;
 
 namespace AdvancedWebTechnologies
 {
@@ -33,7 +35,9 @@ namespace AdvancedWebTechnologies
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdvancedWebTechnologies", Version = "v1" }));
 
 
-            services.AddDbContextPool<DbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SkateShopDB")));
+            services.AddDbContextPool<MyDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SkateShopDB")));
+
+            services.AddScoped<IProducerService, ProducerServices>();
 
         }
 
