@@ -14,5 +14,6 @@ namespace AdvancedWebTechnologies.Data
 
         }
         public DbSet<Producer> Producers { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }
