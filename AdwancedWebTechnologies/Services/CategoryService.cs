@@ -25,16 +25,17 @@ namespace AdvancedWebTechnologies.Services
             var cat = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
             if (cat != null)
             {
-                throw new EntityAlreadyExistsException("Producer already exists");
+                throw new EntityAlreadyExistsException("Category already exists");
             }
-            Category category;
+            var max = _context.Categories.DefaultIfEmpty().Max(r => r == null ? 0 : r.CategoryId);
+            Category category = new Category(max+1, name);
             if (parrent != null)
             {
-                category = new Category(name, parrent);
+                category = new Category(max+1,name, parrent);
             }
             else
             {
-               category = new Category(name);
+               category = new Category(max+1, name);
             }
             _context.Add(category);
             await _context.SaveChangesAsync(cancellationToken);
