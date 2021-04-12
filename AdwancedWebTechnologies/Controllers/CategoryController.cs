@@ -44,8 +44,7 @@ namespace AdvancedWebTechnologies.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory(string name, int parrentId)
         {
-            var parrent = await _service.GetCategoryByIdAsync(parrentId);
-            var category = await _service.CreateCategory(name, parrent);
+            var category = await _service.CreateCategory(name, parrentId);
             return CreatedAtAction(nameof(GetCategoryById), new { Id = category.CategoryId }, category);
         }
         [HttpDelete("{id}")]

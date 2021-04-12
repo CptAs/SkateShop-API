@@ -4,14 +4,16 @@ using AdvancedWebTechnologies.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdvancedWebTechnologies.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210412085208_TryToFixCategoryv3")]
+    partial class TryToFixCategoryv3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +33,12 @@ namespace AdvancedWebTechnologies.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<int?>("ParrentCategoryCategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("CategoryId");
+
+                    b.HasIndex("ParrentCategoryCategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -88,6 +95,15 @@ namespace AdvancedWebTechnologies.Migrations
                     b.HasIndex("ProducerId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("AdvancedWebTechnologies.Entities.Category", b =>
+                {
+                    b.HasOne("AdvancedWebTechnologies.Entities.Category", "ParrentCategory")
+                        .WithMany()
+                        .HasForeignKey("ParrentCategoryCategoryId");
+
+                    b.Navigation("ParrentCategory");
                 });
 
             modelBuilder.Entity("AdvancedWebTechnologies.Entities.Product", b =>

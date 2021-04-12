@@ -20,22 +20,22 @@ namespace AdvancedWebTechnologies.Services
             _context = context;
         }
 
-        public async Task<Category> CreateCategory(string name, Category parrent, CancellationToken cancellationToken = default)
+        public async Task<Category> CreateCategory(string name, int parrentID, CancellationToken cancellationToken = default)
         {
             var cat = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
             if (cat != null)
             {
                 throw new EntityAlreadyExistsException("Category already exists");
             }
-            var max = _context.Categories.DefaultIfEmpty().Max(r => r == null ? 0 : r.CategoryId);
-            Category category = new Category(max+1, name);
+            var parrent = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.CategoryId == parrentID);
+            Category category;
             if (parrent != null)
             {
-                category = new Category(max+1,name, parrent);
+                category = new Category(name, parrent);
             }
             else
             {
-               category = new Category(max+1, name);
+               category = new Category(name);
             }
             _context.Add(category);
             await _context.SaveChangesAsync(cancellationToken);
@@ -57,13 +57,13 @@ namespace AdvancedWebTechnologies.Services
 
         public async Task<IEnumerable<Category>> GetCategories(CancellationToken cancellationToken = default)
         {
-            var categories = await _context.Categories.ToListAsync(cancellationToken);
+            var categories = await _context.Categories.AsNoTracking().Include(x => x.ParrentCategory).ToListAsync(cancellationToken);
             return categories;
         }
 
         public async Task<Category> GetCategoryByIdAsync(int id, CancellationToken cancelationToken = default)
         {
-            var category = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.CategoryId==id, cancelationToken);
+            var category = await _context.Categories.AsNoTracking().Include(x=>x.ParrentCategory).FirstOrDefaultAsync(x => x.CategoryId==id, cancelationToken);
             return category;
         }
 

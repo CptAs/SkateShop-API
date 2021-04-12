@@ -15,16 +15,22 @@ namespace AdvancedWebTechnologies.Services
     {
         private readonly MyDbContext _context;
 
-        public ProductService(MyDbContext context)
+        public ProductService(MyDbContext context, IProducerService proService, ICategoryService catService)
         {
             _context = context;
         }
-        public async Task<Product> CreateProduct(string name, decimal price, string description, int discount, Category category, Producer producer, CancellationToken cancellationToken = default)
+        public async Task<Product> CreateProduct(string name, decimal price, string description, int discount, int categoryId, int producerid, CancellationToken cancellationToken = default)
         {
             var product = await _context.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
             if (product != null)
             {
                 throw new EntityAlreadyExistsException("Category already exists");
+            }
+            var category = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.CategoryId == categoryId, cancellationToken);
+            var producer = await _context.Producers.AsNoTracking().FirstOrDefaultAsync(x => x.ProducerId == producerid, cancellationToken);
+            if(category==null || producer == null)
+            {
+                return null;
             }
             Product p = new Product(name, price, description, discount, category, producer);
             _context.Add(p);

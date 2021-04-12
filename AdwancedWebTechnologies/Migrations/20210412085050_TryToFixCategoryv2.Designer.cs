@@ -4,37 +4,22 @@ using AdvancedWebTechnologies.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdvancedWebTechnologies.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210412085050_TryToFixCategoryv2")]
+    partial class TryToFixCategoryv2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("AdvancedWebTechnologies.Entities.Category", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Categories");
-                });
 
             modelBuilder.Entity("AdvancedWebTechnologies.Entities.Producer", b =>
                 {
@@ -60,9 +45,6 @@ namespace AdvancedWebTechnologies.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -83,8 +65,6 @@ namespace AdvancedWebTechnologies.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("ProducerId");
 
                     b.ToTable("Products");
@@ -92,15 +72,9 @@ namespace AdvancedWebTechnologies.Migrations
 
             modelBuilder.Entity("AdvancedWebTechnologies.Entities.Product", b =>
                 {
-                    b.HasOne("AdvancedWebTechnologies.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("AdvancedWebTechnologies.Entities.Producer", "Producer")
                         .WithMany()
                         .HasForeignKey("ProducerId");
-
-                    b.Navigation("Category");
 
                     b.Navigation("Producer");
                 });

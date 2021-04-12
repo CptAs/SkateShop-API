@@ -13,13 +13,11 @@ namespace AdvancedWebTechnologies.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _service;
-        private readonly IProducerService _proService;
-        private readonly ICategoryService _catService;
-        public ProductController(IProductService service, IProducerService proService, ICategoryService catService)
+
+        public ProductController(IProductService service)
         {
             _service = service;
-            _catService = catService;
-            _proService = proService;
+
         }
 
         [HttpGet("{id}")]
@@ -49,9 +47,8 @@ namespace AdvancedWebTechnologies.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(string name, decimal price, string description, int discount, int categoryId, int producerId)
         {
-            var category = await _catService.GetCategoryByIdAsync(categoryId);
-            var producer = await _proService.GetByIdAsync(producerId);
-            var product = await _service.CreateProduct(name, price, description, discount, category, producer);
+
+            var product = await _service.CreateProduct(name, price, description, discount, categoryId, producerId);
             return CreatedAtAction(nameof(GetProductById), new { Id = product.Id }, product);
         }
         [HttpDelete("{id}")]

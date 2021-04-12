@@ -19,10 +19,8 @@ namespace AdvancedWebTechnologies.Entities
         public string Description { get; set; }
         [Required]
         public int Discount { get; set; } = 0;
-        public Category Category { get; set; }
-        public int CategoryId { get; set; }
-        public Producer Producer { get; set; }
-        public int ProducerId { get; set; }
+        public Category Category { get; }
+        public Producer Producer { get; }
 
         public Product() { }
         public Product(string name, decimal price, string description, int discount, Category category, Producer producer)
@@ -32,9 +30,7 @@ namespace AdvancedWebTechnologies.Entities
             Description = description;
             Discount = discount;
             Category = category;
-            CategoryId = category.CategoryId;
             Producer = producer;
-            ProducerId = producer.ProducerId;
         }
     }
 }
