@@ -17,10 +17,9 @@ namespace AdvancedWebTechnologies.Entities
         public decimal Price { get; set; }
         [Required]
         public string Description { get; set; }
-        [Required]
         public int Discount { get; set; } = 0;
-        public Category Category { get; }
-        public Producer Producer { get; }
+        public Category Category { get; private set; }
+        public Producer Producer { get; private set; }
 
         public Product() { }
         public Product(string name, decimal price, string description, int discount, Category category, Producer producer)

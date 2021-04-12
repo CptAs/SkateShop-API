@@ -27,7 +27,7 @@ namespace AdvancedWebTechnologies.Services
             {
                 throw new EntityAlreadyExistsException("Category already exists");
             }
-            var parrent = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.CategoryId == parrentID);
+            var parrent = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryId == parrentID, cancellationToken);
             Category category;
             if (parrent != null)
             {
@@ -57,13 +57,13 @@ namespace AdvancedWebTechnologies.Services
 
         public async Task<IEnumerable<Category>> GetCategories(CancellationToken cancellationToken = default)
         {
-            var categories = await _context.Categories.AsNoTracking().Include(x => x.ParrentCategory).ToListAsync(cancellationToken);
+            var categories = await _context.Categories.AsNoTracking().Include(x => x.Parrent).ToListAsync(cancellationToken);
             return categories;
         }
 
         public async Task<Category> GetCategoryByIdAsync(int id, CancellationToken cancelationToken = default)
         {
-            var category = await _context.Categories.AsNoTracking().Include(x=>x.ParrentCategory).FirstOrDefaultAsync(x => x.CategoryId==id, cancelationToken);
+            var category = await _context.Categories.AsNoTracking().Include(x=>x.Parrent).FirstOrDefaultAsync(x => x.CategoryId==id, cancelationToken);
             return category;
         }
 

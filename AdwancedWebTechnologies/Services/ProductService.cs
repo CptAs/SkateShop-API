@@ -26,8 +26,8 @@ namespace AdvancedWebTechnologies.Services
             {
                 throw new EntityAlreadyExistsException("Category already exists");
             }
-            var category = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.CategoryId == categoryId, cancellationToken);
-            var producer = await _context.Producers.AsNoTracking().FirstOrDefaultAsync(x => x.ProducerId == producerid, cancellationToken);
+            var category = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryId == categoryId, cancellationToken);
+            var producer = await _context.Producers.FirstOrDefaultAsync(x => x.ProducerId == producerid, cancellationToken);
             if(category==null || producer == null)
             {
                 return null;
@@ -53,13 +53,13 @@ namespace AdvancedWebTechnologies.Services
 
         public async Task<IEnumerable<Product>> GetProducts(CancellationToken cancellationToken = default)
         {
-            var products = await _context.Products.ToListAsync(cancellationToken);
+            var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).ToListAsync(cancellationToken);
             return products;
         }
 
         public async Task<Product> GetProductByIdAsync(int id, CancellationToken cancelationToken = default)
         {
-            var product = await _context.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancelationToken);
+            var product = await _context.Products.AsNoTracking().Include(x => x.Producer).Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id, cancelationToken);
             return product;
         }
 

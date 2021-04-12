@@ -4,14 +4,16 @@ using AdvancedWebTechnologies.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdvancedWebTechnologies.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210412114532_new")]
+    partial class @new
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,9 +67,6 @@ namespace AdvancedWebTechnologies.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -83,14 +82,7 @@ namespace AdvancedWebTechnologies.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("ProducerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ProducerId");
 
                     b.ToTable("Products");
                 });
@@ -102,21 +94,6 @@ namespace AdvancedWebTechnologies.Migrations
                         .HasForeignKey("ParrentCategoryId");
 
                     b.Navigation("Parrent");
-                });
-
-            modelBuilder.Entity("AdvancedWebTechnologies.Entities.Product", b =>
-                {
-                    b.HasOne("AdvancedWebTechnologies.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("AdvancedWebTechnologies.Entities.Producer", "Producer")
-                        .WithMany()
-                        .HasForeignKey("ProducerId");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Producer");
                 });
 #pragma warning restore 612, 618
         }
