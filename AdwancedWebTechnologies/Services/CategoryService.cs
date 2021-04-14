@@ -44,7 +44,7 @@ namespace AdvancedWebTechnologies.Services
 
         public async Task<Category> DeleteCategory(int id, CancellationToken cancellationToken = default)
         {
-            var cat = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.CategoryId == id, cancellationToken);
+            var cat = await _context.Categories.AsNoTracking().Include(x => x.Parrent).FirstOrDefaultAsync(x => x.CategoryId == id, cancellationToken);
             if(cat == null)
             {
                 return null;
@@ -67,9 +67,15 @@ namespace AdvancedWebTechnologies.Services
             return category;
         }
 
+        public async Task<IEnumerable<Category>> GetSubCategoriesByParrentId(int id, CancellationToken cancellationToken = default)
+        {
+            var categories = await _context.Categories.AsNoTracking().Include(x => x.Parrent).Where(x => x.Parrent.CategoryId == id).ToListAsync(cancellationToken);
+            return categories;
+        }
+
         public async Task<Category> UpdateCategory(int id, string name, CancellationToken cancellationToken = default)
         {
-            var cat = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.CategoryId == id, cancellationToken);
+            var cat = await _context.Categories.AsNoTracking().Include(x => x.Parrent).FirstOrDefaultAsync(x => x.CategoryId == id, cancellationToken);
             if (cat == null)
             {
                 return null;
@@ -82,5 +88,6 @@ namespace AdvancedWebTechnologies.Services
             await _context.SaveChangesAsync(cancellationToken);
             return cat;
         }
+        
     }
 }

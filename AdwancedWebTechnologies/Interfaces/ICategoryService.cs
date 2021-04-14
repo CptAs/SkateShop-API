@@ -14,5 +14,6 @@ namespace AdvancedWebTechnologies.Interfaces
         Task<Category> CreateCategory(string name, int parrentID, CancellationToken cancellationToken = default);
         Task<Category> DeleteCategory(int id, CancellationToken cancellationToken = default);
         Task<Category> UpdateCategory(int id, string name, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Category>> GetSubCategoriesByParrentId(int id, CancellationToken cancellationToken = default);
     }
 }

@@ -89,5 +89,15 @@ namespace AdvancedWebTechnologies.Controllers
             }
             return Ok(p);
         }
+        [HttpGet("category/{id}")]
+        public async Task<IActionResult> GetProductsFromCategory(int id)
+        {
+            return Ok(await _service.GetProductsFromCategory(id));
+        }
+        [HttpGet("producer/{id}")]
+        public async Task<IActionResult> GetProductsFromProducer(int id)
+        {
+            return Ok(await _service.GetProductsFromProducer(id));
+        }
     }
 }

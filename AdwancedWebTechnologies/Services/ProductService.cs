@@ -40,7 +40,7 @@ namespace AdvancedWebTechnologies.Services
 
         public async Task<Product> DeleteProduct(int id, CancellationToken cancellationToken = default)
         {
-            var product = await _context.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            var product = await _context.Products.AsNoTracking().Include(x => x.Category).Include(x => x.Producer).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
             if (product == null)
             {
                 return null;
@@ -65,7 +65,7 @@ namespace AdvancedWebTechnologies.Services
 
         public async Task<Product> UpdateProduct(int id, string name, decimal price, string description, int discount, CancellationToken cancellationToken = default)
         {
-            var product = await _context.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            var product = await _context.Products.AsNoTracking().Include(x => x.Category).Include(x => x.Producer).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
             if (product == null)
             {
                 return null;
@@ -86,6 +86,18 @@ namespace AdvancedWebTechnologies.Services
             product.Discount = discount;
             await _context.SaveChangesAsync(cancellationToken);
             return product;
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsFromCategory(int id, CancellationToken cancellationToken)
+        {
+            var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Category.CategoryId == id).ToListAsync(cancellationToken);
+            return products;
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsFromProducer(int id, CancellationToken cancellationToken)
+        {
+            var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Producer.ProducerId == id).ToListAsync(cancellationToken);
+            return products;
         }
     }
 }

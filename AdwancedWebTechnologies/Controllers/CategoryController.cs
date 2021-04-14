@@ -10,7 +10,7 @@ namespace AdvancedWebTechnologies.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController:ControllerBase
+    public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _service;
         public CategoryController(ICategoryService service)
@@ -84,6 +84,11 @@ namespace AdvancedWebTechnologies.Controllers
                 return NotFound(problem);
             }
             return Ok(cat);
+        }
+        [HttpGet("{id}/subcategories")]
+        public async Task<IActionResult> GetSubCategoriesByParrentId(int id)
+        {
+            return Ok(await _service.GetSubCategoriesByParrentId(id));
         }
     }
 }
