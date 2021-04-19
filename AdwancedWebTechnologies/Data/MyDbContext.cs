@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AdvancedWebTechnologies.Data
 {
-    public class MyDbContext:DbContext
+    public class MyDbContext: IdentityDbContext<User>
     {
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
