@@ -67,8 +67,8 @@ namespace AdvancedWebTechnologies.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string email, string username, string Password,
-            string name, string surname, string adress, string postalCode)
+        public async Task<IActionResult> Register(string email, string username, string password,
+            string name, string surname, string address, string postalCode)
         {
             var user = await _userManager.FindByNameAsync(username)
                        ?? await _userManager.FindByEmailAsync(email);
@@ -85,11 +85,11 @@ namespace AdvancedWebTechnologies.Controllers
                 UserName = username,
                 Name = name,
                 Surname = surname,
-                Adress = adress,
+                Adress = address,
                 PostalCode = postalCode
             };
 
-            var result = await _userManager.CreateAsync(user, Password);
+            var result = await _userManager.CreateAsync(user, password);
 
             if (!result.Succeeded)
             {
