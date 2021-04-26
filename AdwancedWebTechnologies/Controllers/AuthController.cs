@@ -1,4 +1,5 @@
 ﻿using AdvancedWebTechnologies.Entities;
+using AdvancedWebTechnologies.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -27,12 +28,12 @@ namespace AdvancedWebTechnologies.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserDTO loginUserDTO)
+        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
-            var user = await _userManager.FindByEmailAsync(loginUserDTO.Login)
-                       ?? await _userManager.FindByNameAsync(loginUserDTO.Login);
+            var user = await _userManager.FindByEmailAsync(loginUserDto.Login)
+                       ?? await _userManager.FindByNameAsync(loginUserDto.Login);
 
-            if (user == null || !await _userManager.CheckPasswordAsync(user, loginUserDTO.Password))
+            if (user == null || !await _userManager.CheckPasswordAsync(user, loginUserDto.Password))
             {
                 return Unauthorized();
             }
@@ -67,11 +68,10 @@ namespace AdvancedWebTechnologies.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string email, string username, string password,
-            string name, string surname, string address, string postalCode)
+        public async Task<IActionResult> Register([FromBody] RegisterUserDto registerUserDto)
         {
-            var user = await _userManager.FindByNameAsync(username)
-                       ?? await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByNameAsync(registerUserDto.Usernamae)
+                       ?? await _userManager.FindByEmailAsync(registerUserDto.Email);
 
             if (user != null)
             {
@@ -80,16 +80,16 @@ namespace AdvancedWebTechnologies.Controllers
 
             user = new User
             {
-                Email = email,
+                Email = registerUserDto.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = username,
-                Name = name,
-                Surname = surname,
-                Adress = address,
-                PostalCode = postalCode
+                UserName = registerUserDto.Usernamae,
+                Name = registerUserDto.Name,
+                Surname = registerUserDto.Surname,
+                Adress = registerUserDto.Adress,
+                PostalCode = registerUserDto.PostalCode
             };
 
-            var result = await _userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, registerUserDto.Password);
 
             if (!result.Succeeded)
             {
