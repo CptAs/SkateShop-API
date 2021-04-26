@@ -27,12 +27,12 @@ namespace AdvancedWebTechnologies.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string login, string password)
+        public async Task<IActionResult> Login([FromBody] LoginUserDTO loginUserDTO)
         {
-            var user = await _userManager.FindByEmailAsync(login)
-                       ?? await _userManager.FindByNameAsync(login);
+            var user = await _userManager.FindByEmailAsync(loginUserDTO.Login)
+                       ?? await _userManager.FindByNameAsync(loginUserDTO.Login);
 
-            if (user == null || !await _userManager.CheckPasswordAsync(user, password))
+            if (user == null || !await _userManager.CheckPasswordAsync(user, loginUserDTO.Password))
             {
                 return Unauthorized();
             }
