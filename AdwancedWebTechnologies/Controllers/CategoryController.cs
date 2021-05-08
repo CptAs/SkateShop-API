@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 namespace AdvancedWebTechnologies.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
     [ApiController]
     public class CategoryController : ControllerBase
     {

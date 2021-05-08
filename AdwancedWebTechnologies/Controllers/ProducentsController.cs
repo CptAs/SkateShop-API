@@ -17,7 +17,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace AdvancedWebTechnologies.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
     [ApiController]
     public class ProducentsController : ControllerBase
     {

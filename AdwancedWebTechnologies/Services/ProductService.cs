@@ -99,5 +99,11 @@ namespace AdvancedWebTechnologies.Services
             var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Producer.ProducerId == id).ToListAsync(cancellationToken);
             return products;
         }
+
+        public async Task<IEnumerable<Product>> GetProductWithDiscount(CancellationToken cancellationToken = default)
+        {
+            var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Discount != 0).ToListAsync(cancellationToken);
+            return products.OrderByDescending(x => x.Discount);
+        }
     }
 }

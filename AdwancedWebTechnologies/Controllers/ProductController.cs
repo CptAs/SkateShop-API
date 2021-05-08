@@ -12,7 +12,6 @@ namespace AdvancedWebTechnologies.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _service;
@@ -101,6 +100,11 @@ namespace AdvancedWebTechnologies.Controllers
         public async Task<IActionResult> GetProductsFromProducer(int id)
         {
             return Ok(await _service.GetProductsFromProducer(id));
+        }
+        [HttpGet("discount")]
+        public async Task<IActionResult> GetProductsWithDiscount()
+        {
+           return Ok(await _service.GetProductWithDiscount());
         }
     }
 }
