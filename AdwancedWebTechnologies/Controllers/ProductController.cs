@@ -1,4 +1,5 @@
 ﻿using AdvancedWebTechnologies.Interfaces;
+using AdvancedWebTechnologies.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -47,10 +48,10 @@ namespace AdvancedWebTechnologies.Controllers
             return Ok(await _service.GetProducts());
         }
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(string name, decimal price, string description, int discount, int categoryId, int producerId)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductDto productModel, int categoryId, int producerId)
         {
 
-            var product = await _service.CreateProduct(name, price, description, discount, categoryId, producerId);
+            var product = await _service.CreateProduct(productModel.Name, productModel.Price, productModel.Description, productModel.Discount, categoryId, producerId);
             return CreatedAtAction(nameof(GetProductById), new { Id = product.Id }, product);
         }
         [HttpDelete("{id}")]
@@ -73,9 +74,9 @@ namespace AdvancedWebTechnologies.Controllers
             return Ok(p);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, string name, decimal price, string description, int discount)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDto product)
         {
-            var p = await _service.UpdateProduct(id, name, price, description, discount);
+            var p = await _service.UpdateProduct(id, product.Name, product.Price, product.Description, product.Discount);
             if (p == null)
             {
                 var problem = new ProblemDetails

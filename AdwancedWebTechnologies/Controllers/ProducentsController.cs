@@ -28,7 +28,7 @@ namespace AdvancedWebTechnologies.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProducer(string name)
+        public async Task<IActionResult> CreateProducer([FromBody] string name)
         {
             var producer = await _service.CreateAsync(name);
             return CreatedAtAction(nameof(GetProducerById), new { Id = producer.ProducerId }, producer);
@@ -77,7 +77,7 @@ namespace AdvancedWebTechnologies.Controllers
             return Ok(prod);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProducer(int id, string name)
+        public async Task<IActionResult> UpdateProducer(int id, [FromBody] string name)
         {
             var prod = await _service.UpdateProducerAsync(id, name);
             if (prod == null)
