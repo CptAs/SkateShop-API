@@ -27,6 +27,7 @@ namespace AdvancedWebTechnologies.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateProducer([FromBody] string name)
         {
             var producer = await _service.CreateAsync(name);
@@ -57,6 +58,7 @@ namespace AdvancedWebTechnologies.Controllers
             return Ok(await _service.GetProducers());
         }
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteProducer(int id)
         {
             var prod = await _service.DeleteProducerAsync(id);
@@ -76,6 +78,7 @@ namespace AdvancedWebTechnologies.Controllers
             return Ok(prod);
         }
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateProducer(int id, [FromBody] string name)
         {
             var prod = await _service.UpdateProducerAsync(id, name);

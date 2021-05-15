@@ -24,7 +24,7 @@ namespace AdvancedWebTechnologies.Services
             var product = await _context.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
             if (product != null)
             {
-                throw new EntityAlreadyExistsException("Category already exists");
+                throw new EntityAlreadyExistsException("Product already exists");
             }
             var category = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryId == categoryId, cancellationToken);
             var producer = await _context.Producers.FirstOrDefaultAsync(x => x.ProducerId == producerid, cancellationToken);

@@ -13,6 +13,7 @@ namespace AdvancedWebTechnologies.Data
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
 
+
         }
         public DbSet<Producer> Producers { get; set; }
         public DbSet<Category> Categories { get; set; }

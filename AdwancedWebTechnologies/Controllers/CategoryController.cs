@@ -42,12 +42,14 @@ namespace AdvancedWebTechnologies.Controllers
         {
             return Ok(await _service.GetCategories());
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody] string name, int parentId)
         {
             var category = await _service.CreateCategory(name, parentId);
             return CreatedAtAction(nameof(GetCategoryById), new { Id = category.CategoryId }, category);
         }
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
@@ -67,6 +69,7 @@ namespace AdvancedWebTechnologies.Controllers
             }
             return Ok(cat);
         }
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] string name)
         {
