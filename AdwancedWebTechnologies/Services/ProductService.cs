@@ -14,10 +14,12 @@ namespace AdvancedWebTechnologies.Services
     public class ProductService : IProductService
     {
         private readonly MyDbContext _context;
+        private static Random rng;
 
         public ProductService(MyDbContext context, IProducerService proService, ICategoryService catService)
         {
             _context = context;
+            rng = new Random();
         }
         public async Task<Product> CreateProduct(string name, decimal price, string description, int discount, int categoryId, int producerid, CancellationToken cancellationToken = default)
         {
@@ -103,7 +105,26 @@ namespace AdvancedWebTechnologies.Services
         public async Task<IEnumerable<Product>> GetProductWithDiscount(CancellationToken cancellationToken = default)
         {
             var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Discount != 0).ToListAsync(cancellationToken);
-            return products.OrderByDescending(x => x.Discount);
+            return products.OrderByDescending(x => x.Discount).Take(10);
+        }
+        public async Task<IEnumerable<Product>> GetTenRandomProductsFromCategory(int id, int productId, CancellationToken cancellationToken = default)
+        {
+            var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Category.CategoryId == id && x.Id != productId).ToListAsync(cancellationToken);
+            return products.OrderBy(a => rng.Next()).Take(10);
+        }
+
+        public async Task<IEnumerable<Product>> GetProductFromListOfIds(List<int> ids, CancellationToken cancellationToken = default)
+        {
+            List<Product> products = new List<Product>();
+            foreach(int id in ids)
+            {
+                var product = await _context.Products.Include(x => x.Category).Include(x => x.Producer).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+                if(product!=null)
+                {
+                    products.Add(product);
+                }
+            }
+            return products;
         }
     }
 }

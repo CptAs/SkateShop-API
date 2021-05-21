@@ -7,10 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace AdvancedWebTechnologies.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -22,7 +23,7 @@ namespace AdvancedWebTechnologies.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id)
         {
             var p = await _service.GetProductByIdAsync(id);
@@ -41,19 +42,19 @@ namespace AdvancedWebTechnologies.Controllers
             }
             return Ok(p);
         }
-        [HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public async Task<IActionResult> GetProducts()
         {
             return Ok(await _service.GetProducts());
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductDto productModel, int categoryId, int producerId)
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public async Task<IActionResult> CreateProduct([Microsoft.AspNetCore.Mvc.FromBody] ProductDto productModel, int categoryId, int producerId)
         {
 
             var product = await _service.CreateProduct(productModel.Name, productModel.Price, productModel.Description, productModel.Discount, categoryId, producerId);
             return CreatedAtAction(nameof(GetProductById), new { Id = product.Id }, product);
         }
-        [HttpDelete("{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var p = await _service.DeleteProduct(id);
@@ -72,8 +73,8 @@ namespace AdvancedWebTechnologies.Controllers
             }
             return Ok(p);
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDto product)
+        [Microsoft.AspNetCore.Mvc.HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, [Microsoft.AspNetCore.Mvc.FromBody] ProductDto product)
         {
             var p = await _service.UpdateProduct(id, product.Name, product.Price, product.Description, product.Discount);
             if (p == null)
@@ -91,20 +92,36 @@ namespace AdvancedWebTechnologies.Controllers
             }
             return Ok(p);
         }
-        [HttpGet("category/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet("category/{id}")]
         public async Task<IActionResult> GetProductsFromCategory(int id)
         {
             return Ok(await _service.GetProductsFromCategory(id));
         }
-        [HttpGet("producer/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet("producer/{id}")]
         public async Task<IActionResult> GetProductsFromProducer(int id)
         {
             return Ok(await _service.GetProductsFromProducer(id));
         }
-        [HttpGet("discount")]
+        [Microsoft.AspNetCore.Mvc.HttpGet("discount")]
         public async Task<IActionResult> GetProductsWithDiscount()
         {
            return Ok(await _service.GetProductWithDiscount());
+        }
+        [Microsoft.AspNetCore.Mvc.HttpGet("category/{id}/random")]
+        public async Task<IActionResult> GetRandomProductsFromCategory(int id, int productId)
+        {
+            return Ok(await _service.GetTenRandomProductsFromCategory(id, productId));
+        }
+        [Microsoft.AspNetCore.Mvc.HttpGet("list")]
+        public async Task<IActionResult> GetProductsFromListOfIds([FromUri] string idsInString)
+        {
+            var list = idsInString.Split(",");
+            List<int> ids = new List<int>();
+            foreach(string x in list)
+            {
+                ids.Add(int.Parse(x));
+            }
+            return Ok(await _service.GetProductFromListOfIds(ids));
         }
     }
 }
