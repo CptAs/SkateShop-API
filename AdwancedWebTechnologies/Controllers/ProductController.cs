@@ -108,9 +108,9 @@ namespace AdvancedWebTechnologies.Controllers
            return Ok(await _service.GetProductWithDiscount());
         }
         [Microsoft.AspNetCore.Mvc.HttpGet("category/{id}/random")]
-        public async Task<IActionResult> GetRandomProductsFromCategory(int id, int productId)
+        public async Task<IActionResult> GetRandomProductsFromCategory(int id)
         {
-            return Ok(await _service.GetTenRandomProductsFromCategory(id, productId));
+            return Ok(await _service.GetTenRandomProductsFromCategory(id));
         }
         [Microsoft.AspNetCore.Mvc.HttpGet("list")]
         public async Task<IActionResult> GetProductsFromListOfIds([FromUri] string idsInString)

@@ -107,9 +107,14 @@ namespace AdvancedWebTechnologies.Services
             var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Discount != 0).ToListAsync(cancellationToken);
             return products.OrderByDescending(x => x.Discount).Take(10);
         }
-        public async Task<IEnumerable<Product>> GetTenRandomProductsFromCategory(int id, int productId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Product>> GetTenRandomProductsFromCategory(int id, CancellationToken cancellationToken = default)
         {
-            var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Category.CategoryId == id && x.Id != productId).ToListAsync(cancellationToken);
+            var product = await _context.Products.Include(x => x.Category).Include(x => x.Producer).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            if(product == null)
+            {
+                return new List<Product>();
+            }
+            var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Category.CategoryId == product.Category.CategoryId && x.Id != id).ToListAsync(cancellationToken);
             return products.OrderBy(a => rng.Next()).Take(10);
         }
 
