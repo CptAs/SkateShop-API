@@ -18,6 +18,7 @@ namespace AdvancedWebTechnologies.Interfaces
         Task<Order> CreateOrder(User user, CancellationToken cancellationToken = default);
         Task<OrderProduct> CreateOrderProduct(int quantity, int orderId, int productId, CancellationToken cancellationToken = default);
         Task<OrderProduct> GetOrderProductById(int id, CancellationToken cancellationToken = default);
+        Task<Order> CreateOrderFromList(User user, List<List<int>> orderProducts, CancellationToken cancellationToken = default);
 
     }
 }

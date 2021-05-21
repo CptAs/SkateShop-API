@@ -158,6 +158,13 @@ namespace AdvancedWebTechnologies.Controllers
             var orderProduct = await orderService.CreateOrderProduct(orderDto.Quantity, orderDto.OrderId, orderDto.ProductId);
             return CreatedAtAction(nameof(GetOrderProductById), new { Id = orderProduct.OrderProductID }, orderProduct);
         }
+        [HttpPost("orders")]
+        public async Task<IActionResult> CreateOrder([FromBody] OrderFromListDto dto)
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            var order = await orderService.CreateOrderFromList(user, dto.orderProducts);
+            return CreatedAtAction(nameof(GetOrderById), new { Id = order.OrderId }, order);
+        }
 
 
     }

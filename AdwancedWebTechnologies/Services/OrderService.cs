@@ -26,6 +26,27 @@ namespace AdvancedWebTechnologies.Services
             return order;
         }
 
+        public async Task<Order> CreateOrderFromList(User user, List<List<int>> orderProducts, CancellationToken cancellationToken = default)
+        {
+            var order = new Order(user);
+            decimal price = 0;
+            foreach(List<int> orderData in orderProducts)
+            {
+                var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == orderData[0], cancellationToken);
+                if(product!=null)
+                {
+                    var orderProduct = new OrderProduct(orderData[1], product, order);
+                    price += orderProduct.Quantity * (orderProduct.Product.Price * (1 - (orderProduct.Product.Discount / 100)));
+                    _context.Add(orderProduct);
+                }
+            }
+            order.SumPrice = price;
+            _context.Add(order);
+            await _context.SaveChangesAsync(cancellationToken);
+            return order;
+
+        }
+
         public async Task<OrderProduct> CreateOrderProduct(int quantity, int orderId, int productId, CancellationToken cancellationToken = default)
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
