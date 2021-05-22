@@ -36,7 +36,7 @@ namespace AdvancedWebTechnologies.Services
                 if(product!=null)
                 {
                     var orderProduct = new OrderProduct(orderData[1], product, order);
-                    price += orderProduct.Quantity * (orderProduct.Product.Price * (1 - (orderProduct.Product.Discount / 100)));
+                    price += orderProduct.Quantity * (orderProduct.Product.Price * (decimal)(100 - orderProduct.Product.Discount)/100);
                     _context.Add(orderProduct);
                 }
             }

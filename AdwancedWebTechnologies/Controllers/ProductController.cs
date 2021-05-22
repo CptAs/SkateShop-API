@@ -115,6 +115,10 @@ namespace AdvancedWebTechnologies.Controllers
         [Microsoft.AspNetCore.Mvc.HttpGet("list")]
         public async Task<IActionResult> GetProductsFromListOfIds([FromUri] string idsInString)
         {
+            if(idsInString == null)
+            {
+                return Ok(new List<int>());
+            }
             var list = idsInString.Split(",");
             List<int> ids = new List<int>();
             foreach(string x in list)
