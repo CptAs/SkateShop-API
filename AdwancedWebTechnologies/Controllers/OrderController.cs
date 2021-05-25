@@ -2,6 +2,7 @@
 using AdvancedWebTechnologies.Interfaces;
 using AdvancedWebTechnologies.Models;
 using AdvancedWebTechnologies.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -158,6 +159,7 @@ namespace AdvancedWebTechnologies.Controllers
             var orderProduct = await orderService.CreateOrderProduct(orderDto.Quantity, orderDto.OrderId, orderDto.ProductId);
             return CreatedAtAction(nameof(GetOrderProductById), new { Id = orderProduct.OrderProductID }, orderProduct);
         }
+        [Authorize]
         [HttpPost("orders")]
         public async Task<IActionResult> CreateOrder([FromBody] OrderFromListDto dto)
         {
