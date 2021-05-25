@@ -102,7 +102,7 @@ namespace AdvancedWebTechnologies.Services
             return products;
         }
 
-        public async Task<IEnumerable<Product>> GetProductWithDiscount(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Product>> GetProductsWithDiscount(CancellationToken cancellationToken = default)
         {
             var products = await _context.Products.Include(x => x.Category).Include(x => x.Producer).Where(x => x.Discount != 0).ToListAsync(cancellationToken);
             return products.OrderByDescending(x => x.Discount).Take(10);
@@ -118,7 +118,7 @@ namespace AdvancedWebTechnologies.Services
             return products.OrderBy(a => rng.Next()).Take(10);
         }
 
-        public async Task<IEnumerable<Product>> GetProductFromListOfIds(List<int> ids, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Product>> GetProductsFromListOfIds(List<int> ids, CancellationToken cancellationToken = default)
         {
             List<Product> products = new List<Product>();
             foreach(int id in ids)
@@ -130,6 +130,31 @@ namespace AdvancedWebTechnologies.Services
                 }
             }
             return products;
+        }
+
+        public async Task<IEnumerable<Product>> GetBestsellingProducts(CancellationToken cancellationToken = default)
+        {
+            var checkDate = DateTime.Now.AddDays(-30);
+            var orderProducts = await _context.Orders
+                .Include(x => x.OrderProducts)
+                .ThenInclude(x => x.Product)
+                .Where(x => x.OrderDate >= checkDate)
+                .SelectMany(x => x.OrderProducts)
+                .Select(x => x.Product)
+                .ToListAsync(cancellationToken);
+            Dictionary<Product, int> products = new Dictionary<Product, int>();
+            foreach(Product product in orderProducts)
+            {
+                if(products.ContainsKey(product))
+                {
+                    products[product]++;
+                }
+                else
+                {
+                    products[product] = 1;
+                }
+            }
+            return products.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).Keys.Take(10);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace AdvancedWebTechnologies.Entities
         public decimal SumPrice { get; set; }
 
         public Status Status { get; set; }
+        public DateTime OrderDate { get; set; }
 
         public List<OrderProduct> OrderProducts { get; set; }
         public Order() { }
@@ -23,6 +24,7 @@ namespace AdvancedWebTechnologies.Entities
             User = user;
             SumPrice = sumPrice;
             Status = status;
+            OrderDate = DateTime.Now;
         }
     }
 }

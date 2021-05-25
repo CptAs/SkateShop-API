@@ -105,7 +105,7 @@ namespace AdvancedWebTechnologies.Controllers
         [Microsoft.AspNetCore.Mvc.HttpGet("discount")]
         public async Task<IActionResult> GetProductsWithDiscount()
         {
-           return Ok(await _service.GetProductWithDiscount());
+           return Ok(await _service.GetProductsWithDiscount());
         }
         [Microsoft.AspNetCore.Mvc.HttpGet("{id}/othersFromCategory")]
         public async Task<IActionResult> GetRandomProductsFromCategory(int id)
@@ -125,7 +125,13 @@ namespace AdvancedWebTechnologies.Controllers
             {
                 ids.Add(int.Parse(x));
             }
-            return Ok(await _service.GetProductFromListOfIds(ids));
+            return Ok(await _service.GetProductsFromListOfIds(ids));
         }
+        [Microsoft.AspNetCore.Mvc.HttpGet("bestsellers")]
+        public async Task<IActionResult> GetBestsellingProducts()
+        {
+            return Ok(await _service.GetBestsellingProducts());
+        }
+
     }
 }

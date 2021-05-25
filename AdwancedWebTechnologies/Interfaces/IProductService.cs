@@ -16,8 +16,9 @@ namespace AdvancedWebTechnologies.Interfaces
         Task<Product> UpdateProduct(int id, string name, decimal price, string description, int discount, CancellationToken cancellationToken = default);
         Task<IEnumerable<Product>> GetProductsFromCategory(int id, CancellationToken cancellationToken = default);
         Task<IEnumerable<Product>> GetProductsFromProducer(int id, CancellationToken cancellationToken= default);
-        Task<IEnumerable<Product>> GetProductWithDiscount(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Product>> GetProductsWithDiscount(CancellationToken cancellationToken = default);
         Task<IEnumerable<Product>> GetTenRandomProductsFromCategory(int id, CancellationToken cancellationToken = default);
-        Task<IEnumerable<Product>> GetProductFromListOfIds(List<int> ids, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Product>> GetProductsFromListOfIds(List<int> ids, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Product>> GetBestsellingProducts(CancellationToken cancellationToken = default);
     }
 }
