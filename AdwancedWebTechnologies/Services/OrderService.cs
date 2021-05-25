@@ -113,7 +113,7 @@ namespace AdvancedWebTechnologies.Services
 
         public async Task<IEnumerable<Order>> GetOrders(CancellationToken cancellationToken = default)
         {
-            var orders = await _context.Orders.Include(x => x.OrderProducts).ThenInclude(x => x.Product).ToListAsync(cancellationToken);
+            var orders = await _context.Orders.Include(x=>x.User).Include(x => x.OrderProducts).ThenInclude(x => x.Product).ToListAsync(cancellationToken);
             return orders;
         }
 
