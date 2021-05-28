@@ -18,10 +18,10 @@ namespace AdvancedWebTechnologies.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProducentsController : ControllerBase
+    public class ProducerController : ControllerBase
     {
         private readonly IProducerService _service;
-        public ProducentsController(IProducerService services)
+        public ProducerController(IProducerService services)
         {
             _service = services;
         }
