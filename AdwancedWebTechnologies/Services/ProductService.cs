@@ -138,6 +138,10 @@ namespace AdvancedWebTechnologies.Services
             var orderProducts = await _context.Orders
                 .Include(x => x.OrderProducts)
                 .ThenInclude(x => x.Product)
+                .ThenInclude(x => x.Category)
+                .Include(x => x.OrderProducts)
+                .ThenInclude(x => x.Product)
+                .ThenInclude(x => x.Producer)
                 .Where(x => x.OrderDate >= checkDate)
                 .SelectMany(x => x.OrderProducts)
                 .Select(x => x.Product)
