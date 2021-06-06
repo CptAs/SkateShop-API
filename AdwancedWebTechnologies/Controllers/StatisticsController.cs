@@ -23,5 +23,10 @@ namespace AdvancedWebTechnologies.Controllers
         {
             return Ok(await _service.GetStatisticsFromLastMonth());
         }
+        [Microsoft.AspNetCore.Mvc.HttpGet("month/current")]
+        public async Task<IActionResult> GetStatisticsFromCurrentMonth()
+        {
+            return Ok(await _service.GetStatisticsFromThisMonth());
+        }
     }
 }

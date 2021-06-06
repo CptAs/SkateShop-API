@@ -40,9 +40,19 @@ namespace AdvancedWebTechnologies.Services
             throw new NotImplementedException();
         }
 
-        public Task<Dictionary<int, decimal>> GetStatisticsFromThisMonth(CancellationToken cancellationToken = default)
+        public async Task<Dictionary<int, decimal>> GetStatisticsFromThisMonth(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var today = DateTime.Now;
+            Dictionary<int, decimal> statistics = new Dictionary<int, decimal>();
+            var dateFirstToCheck = new DateTime(today.Year, today.Month, 1);
+            while (dateFirstToCheck.Date != today.AddDays(1).Date)
+            {
+                var orders = await _context.Orders.Where(x => x.OrderDate.Date == dateFirstToCheck.Date).ToListAsync(cancellationToken);
+                var totalPrice = orders.Sum(order => order.SumPrice);
+                statistics.Add(dateFirstToCheck.Day, totalPrice);
+                dateFirstToCheck = dateFirstToCheck.AddDays(1);
+            }
+            return statistics;
         }
 
         public Task<Dictionary<string, decimal>> GetStatisticsFromThisYear(CancellationToken cancellationToken = default)
