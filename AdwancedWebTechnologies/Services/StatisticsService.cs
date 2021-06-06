@@ -71,7 +71,7 @@ namespace AdvancedWebTechnologies.Services
             var today = DateTime.Now;
             Dictionary<string, decimal> statistics = new Dictionary<string, decimal>();
             var dateFirstToCheck = new DateTime(today.Year, 1, 1);
-            while (dateFirstToCheck.Month != today.AddYears(1).Month)
+            while (dateFirstToCheck.Month != today.AddMonths(1).Month)
             {
                 var orders = await _context.Orders.Where(x => x.OrderDate.Month == dateFirstToCheck.Month && dateFirstToCheck.Year == x.OrderDate.Year).ToListAsync(cancellationToken);
                 var totalPrice = orders.Sum(order => order.SumPrice);
