@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace AdvancedWebTechnologies.Services
 {
@@ -35,9 +36,19 @@ namespace AdvancedWebTechnologies.Services
 
         }
 
-        public Task<Dictionary<string, decimal>> GetStatisticsFromLastYear(CancellationToken cancellationToken = default)
+        public async Task<Dictionary<string, decimal>> GetStatisticsFromLastYear(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var today = DateTime.Now;
+            Dictionary<string, decimal> statistics = new Dictionary<string, decimal>();
+            var dateFirstToCheck = new DateTime(today.AddYears(-1).Year, 1, 1);
+            while (dateFirstToCheck.Year == today.AddYears(-1).Year)
+            {
+                var orders = await _context.Orders.Where(x => x.OrderDate.Month == dateFirstToCheck.Month && dateFirstToCheck.Year == x.OrderDate.Year).ToListAsync(cancellationToken);
+                var totalPrice = orders.Sum(order => order.SumPrice);
+                statistics.Add(dateFirstToCheck.ToString("MMMM", new CultureInfo("en-US")), totalPrice);
+                dateFirstToCheck = dateFirstToCheck.AddMonths(1);
+            }
+            return statistics;
         }
 
         public async Task<Dictionary<int, decimal>> GetStatisticsFromThisMonth(CancellationToken cancellationToken = default)
@@ -55,9 +66,19 @@ namespace AdvancedWebTechnologies.Services
             return statistics;
         }
 
-        public Task<Dictionary<string, decimal>> GetStatisticsFromThisYear(CancellationToken cancellationToken = default)
+        public async Task<Dictionary<string, decimal>> GetStatisticsFromThisYear(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var today = DateTime.Now;
+            Dictionary<string, decimal> statistics = new Dictionary<string, decimal>();
+            var dateFirstToCheck = new DateTime(today.Year, 1, 1);
+            while (dateFirstToCheck.Month != today.AddYears(1).Month)
+            {
+                var orders = await _context.Orders.Where(x => x.OrderDate.Month == dateFirstToCheck.Month && dateFirstToCheck.Year == x.OrderDate.Year).ToListAsync(cancellationToken);
+                var totalPrice = orders.Sum(order => order.SumPrice);
+                statistics.Add(dateFirstToCheck.ToString("MMMM", new CultureInfo("en-US")), totalPrice);
+                dateFirstToCheck = dateFirstToCheck.AddMonths(1);
+            }
+            return statistics;
         }
     }
 }
