@@ -20,5 +20,6 @@ namespace AdvancedWebTechnologies.Interfaces
         Task<IEnumerable<Product>> GetTenRandomProductsFromCategory(int id, CancellationToken cancellationToken = default);
         Task<IEnumerable<Product>> GetProductsFromListOfIds(List<int> ids, CancellationToken cancellationToken = default);
         Task<IEnumerable<Product>> GetBestsellingProducts(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Product>> FillProduct(CancellationToken cancellationToken = default);
     }
 }

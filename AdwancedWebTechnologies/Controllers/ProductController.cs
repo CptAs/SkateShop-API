@@ -1,4 +1,5 @@
-﻿using AdvancedWebTechnologies.Interfaces;
+﻿using AdvancedWebTechnologies.Entities;
+using AdvancedWebTechnologies.Interfaces;
 using AdvancedWebTechnologies.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -131,6 +132,11 @@ namespace AdvancedWebTechnologies.Controllers
         public async Task<IActionResult> GetBestsellingProducts()
         {
             return Ok(await _service.GetBestsellingProducts());
+        }
+        [Microsoft.AspNetCore.Mvc.HttpPost("fill")]
+        public async Task<IActionResult> FillDatabase()
+        {
+            return Ok(await _service.FillProduct());
         }
 
     }
