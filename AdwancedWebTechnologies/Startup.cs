@@ -107,7 +107,6 @@ namespace AdvancedWebTechnologies
 
             services.AddScoped<IOrderService, OrderService>();
 
-            services.AddScoped<IStaticticsService, StatisticsService>();
 
         }
 

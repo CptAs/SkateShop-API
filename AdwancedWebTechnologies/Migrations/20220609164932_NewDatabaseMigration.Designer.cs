@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdvancedWebTechnologies.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20210419085557_Users")]
-    partial class Users
+    [Migration("20220609164932_NewDatabaseMigration")]
+    partial class NewDatabaseMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,14 +33,60 @@ namespace AdvancedWebTechnologies.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int?>("ParrentCategoryId")
-                        .HasColumnType("int");
-
                     b.HasKey("CategoryId");
 
-                    b.HasIndex("ParrentCategoryId");
-
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("AdvancedWebTechnologies.Entities.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SumPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("AdvancedWebTechnologies.Entities.OrderProduct", b =>
+                {
+                    b.Property<int>("OrderProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderProductID");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("AdvancedWebTechnologies.Entities.Producer", b =>
@@ -305,13 +351,28 @@ namespace AdvancedWebTechnologies.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AdvancedWebTechnologies.Entities.Category", b =>
+            modelBuilder.Entity("AdvancedWebTechnologies.Entities.Order", b =>
                 {
-                    b.HasOne("AdvancedWebTechnologies.Entities.Category", "Parrent")
+                    b.HasOne("AdvancedWebTechnologies.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("ParrentCategoryId");
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Parrent");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AdvancedWebTechnologies.Entities.OrderProduct", b =>
+                {
+                    b.HasOne("AdvancedWebTechnologies.Entities.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("AdvancedWebTechnologies.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("AdvancedWebTechnologies.Entities.Product", b =>
@@ -378,6 +439,11 @@ namespace AdvancedWebTechnologies.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AdvancedWebTechnologies.Entities.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
                 });
 #pragma warning restore 612, 618
         }
