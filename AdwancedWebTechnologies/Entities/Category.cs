@@ -16,18 +16,12 @@ namespace AdvancedWebTechnologies.Entities
         [Required]
         [MaxLength(15)]
         public string Name { get; set; }
-        public Category Parrent { get; private set; }
 
         public Category() { }
-        public Category(string name, Category cat)
-        {
-            Name = name;
-            Parrent = cat;
-        }
+
         public Category(string name)
         {
             Name = name;
-            Parrent = null;
         }
     }
 }

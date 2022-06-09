@@ -44,9 +44,9 @@ namespace AdvancedWebTechnologies.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] string name, int parentId)
+        public async Task<IActionResult> CreateCategory([FromBody] string name)
         {
-            var category = await _service.CreateCategory(name, parentId);
+            var category = await _service.CreateCategory(name);
             return CreatedAtAction(nameof(GetCategoryById), new { Id = category.CategoryId }, category);
         }
         [Authorize]
@@ -88,11 +88,6 @@ namespace AdvancedWebTechnologies.Controllers
                 return NotFound(problem);
             }
             return Ok(cat);
-        }
-        [HttpGet("{id}/subcategories")]
-        public async Task<IActionResult> GetSubCategoriesByParrentId(int id)
-        {
-            return Ok(await _service.GetSubCategoriesByParrentId(id));
         }
     }
 }
